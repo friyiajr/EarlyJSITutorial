@@ -8,4 +8,6 @@
 
 @interface TeachingJsi : NSObject <RCTBridgeModule>
 
+@property(nonatomic, assign) BOOL setBridgeOnMainQueue;
+
 @end

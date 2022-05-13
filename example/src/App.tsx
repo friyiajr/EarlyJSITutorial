@@ -1,31 +1,81 @@
-import * as React from 'react';
+import React, { FC, useState } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-teaching-jsi';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+} from 'react-native';
 
-export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+const App = () => {
+  const [firstVal, setFirstVal] = useState(1);
+  const [secondVal, setSecondVal] = useState(1);
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onChangeFirstValue = (text) => {
+    setFirstVal(Number(text));
+  };
+
+  const onChangeSecondValue = (text) => {
+    setSecondVal(Number(text));
+  };
+
+  const computeGcd = () => {
+    const gcdVal = jsiGcd({
+      a: firstVal,
+      b: secondVal,
+    });
+    Alert.alert(`Your GCD is: ${gcdVal}`);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View>
+          <TextInput
+            value={firstVal + ''}
+            onChangeText={onChangeFirstValue}
+            keyboardType="numeric"
+            style={styles.textInput}
+          />
+          <TextInput
+            value={secondVal + ''}
+            onChangeText={onChangeSecondValue}
+            keyboardType="numeric"
+            style={styles.textInput}
+          />
+        </View>
+        <View>
+          <Button title="Compute GCD" onPress={computeGcd} />
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
   },
+  textInput: {
+    backgroundColor: 'lightgrey',
+    marginVertical: 10,
+    width: 75,
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
+  },
 });
+
+export default App;
