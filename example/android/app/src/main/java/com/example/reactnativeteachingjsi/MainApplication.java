@@ -7,15 +7,25 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactInstanceManager;
+
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import com.facebook.react.bridge.JSIModulePackage;
+import com.reactnativeteachingjsi.TeachingJsiModule;
 import com.reactnativeteachingjsi.TeachingJsiPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
+
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new TeachingJsiPackage();
+        }
+
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -27,7 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for TeachingJsiExample:
           // packages.add(new MyReactNativePackage());
-          packages.add(new TeachingJsiPackage());
+          packages.add(new TeachingJsiModule());
           return packages;
         }
 

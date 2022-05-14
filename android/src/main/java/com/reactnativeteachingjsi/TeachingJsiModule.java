@@ -1,41 +1,30 @@
 package com.reactnativeteachingjsi;
 
-import androidx.annotation.NonNull;
-
-import com.facebook.react.bridge.Promise;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.uimanager.ViewManager;
 
-@ReactModule(name = TeachingJsiModule.NAME)
-public class TeachingJsiModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "TeachingJsi";
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    public TeachingJsiModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-    }
+public class TeachingJsiModule implements ReactPackage {
 
-    @Override
-    @NonNull
-    public String getName() {
-        return NAME;
-    }
+   @Override
+   public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+       return Collections.emptyList();
+   }
 
-    static {
-        try {
-            // Used to load the 'native-lib' library on application startup.
-            System.loadLibrary("cpp");
-        } catch (Exception ignored) {
-        }
-    }
+   @Override
+   public List<NativeModule> createNativeModules(
+           ReactApplicationContext reactContext) {
+       List<NativeModule> modules = new ArrayList<>();
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    public void multiply(int a, int b, Promise promise) {
-        promise.resolve(nativeMultiply(a, b));
-    }
+       modules.add(new AndroidNative(reactContext));
 
-    public static native int nativeMultiply(int a, int b);
+       return modules;
+   }
+
 }
+
