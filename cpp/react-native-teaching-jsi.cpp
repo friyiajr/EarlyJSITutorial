@@ -4,24 +4,60 @@
 
 using namespace facebook;
 
-auto jsiCeil = [](
+/// Revieves a decimal number and a precision value then rounds up to that precision
+/// @param rt a reference to the runtime environment
+/// @param thisValue JavaScript this value context
+/// @param args arguments from JS
+/// @param count total number of arguments passed to the function
+jsi::Value jsiCeil(
   jsi::Runtime & rt,
   const jsi::Value &thisValue,
   const jsi::Value *args,
   size_t count
-) -> jsi::Value {
-  auto param = args[0].asNumber();
-  return jsi::Value(ceil(param));
+) {
+  auto numberToRound = args[0].asNumber();
+  
+  // Default to 0 decimal places if no precision value
+  // is specified
+  auto base = count > 1 ? args[1].asNumber() : 0;
+  
+  // Use powers of 10 to increase to a larger value that can
+  // be rounded more easily.
+  // For example:
+  //    5.124 * 100  = 512.4
+  //    ceil(512.4)  = 513
+  //    512 / 100    = 5.13
+  auto denominator = pow(10, base);
+  auto result = ceil(numberToRound * denominator) / denominator;
+  return jsi::Value(result);
 };
 
-auto jsiFloor = [](
+/// Revieves a decimal number and a precision value then rounds down to that precision
+/// @param rt a reference to the runtime environment
+/// @param thisValue JavaScript this value context
+/// @param args arguments from JS
+/// @param count total number of arguments passed to the function
+jsi::Value jsiFloor(
   jsi::Runtime & rt,
   const jsi::Value &thisValue,
   const jsi::Value *args,
   size_t count
-) -> jsi::Value {
-  auto param = args[0].asNumber();
-  return jsi::Value(floor(param));
+) {
+  auto numberToRound = args[0].asNumber();
+  
+  // Default to 0 decimal places if no precision value
+  // is specified
+  auto base = count > 1 ? args[1].asNumber() : 0;
+  
+  // Use powers of 10 to increase to a larger value that can
+  // be rounded more easily.
+  // For example:
+  //    5.124 * 100  = 512.4
+  //    floor(512.4) = 512
+  //    512 / 100    = 5.12
+  auto denominator = pow(10, base);
+  auto result = floor(numberToRound * denominator) / denominator;
+  return jsi::Value(result);
 };
 
 void installMath(jsi::Runtime & rt) {
