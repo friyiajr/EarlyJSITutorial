@@ -24,11 +24,9 @@ const App = () => {
   };
 
   const computeGcd = () => {
-    const gcdVal = jsiGcd({
-      a: firstVal,
-      b: secondVal,
-    });
-    Alert.alert(`Your GCD is: ${gcdVal}`);
+    // const gcdVal = jsiGcd(firstVal, secondVal);
+    const floorVal = jsiCeil(firstVal);
+    Alert.alert(`Your GCD is: ${floorVal}`);
   };
 
   return (
